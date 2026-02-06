@@ -2,20 +2,48 @@
 
 import Link from "next/link"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+import Swal from "sweetalert2"
+
+
 
 export default function LoginPage() {
+
+    const router = useRouter()
+    // router.push("/counter")
+
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
+
+
+
+
     const [isLoading, setIsLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
 
     const handleSubmit = (e: React.FormEvent) => {
+
+        // ป้องกันการ Refresh หน้าจอ สำหรับ Form
         e.preventDefault()
+        if (username === "admin" && password === "admin") {
+            router.push("/counter")
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }
+
+        // กำหนดค่า isLoading เป็น true
         setIsLoading(true)
         // Simulate login
         setTimeout(() => setIsLoading(false), 2000)
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
             {/* Animated background elements */}
             <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
@@ -29,7 +57,7 @@ export default function LoginPage() {
                 <div className="backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl border border-white/20 p-8 space-y-8">
                     {/* Logo/Header */}
                     <div className="text-center space-y-2">
-                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg shadow-purple-500/30 mb-4">
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-linear-to-br from-purple-500 to-pink-500 shadow-lg shadow-purple-500/30 mb-4">
                             <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                             </svg>
@@ -58,6 +86,8 @@ export default function LoginPage() {
                                     placeholder="กรอกชื่อผู้ใช้"
                                     className="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 hover:bg-white/10"
                                     required
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
                                 />
                             </div>
                         </div>
@@ -80,8 +110,12 @@ export default function LoginPage() {
                                     placeholder="กรอกรหัสผ่าน"
                                     className="w-full pl-12 pr-12 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 hover:bg-white/10"
                                     required
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
                                 <button
+                                    // type="button" เพื่อป้องกันการส่ง Form 
+                                    // หรือสามารถใช้ type="submit" ก็ได้
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
                                     className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-white transition-colors"
@@ -118,7 +152,7 @@ export default function LoginPage() {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full py-3.5 px-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center space-x-2"
+                            className="w-full py-3.5 px-4 bg-linear-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center space-x-2"
                         >
                             {isLoading ? (
                                 <>
