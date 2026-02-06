@@ -3,10 +3,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 // rfc
-export default function Navbar({ href, children }: {
-    href: string,
-    children: React.ReactNode
-}) {
+export default function Navbar() {
     const pathname = usePathname()
 
 
